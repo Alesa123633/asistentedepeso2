@@ -1,119 +1,79 @@
-import sys
-from PyQt5.QtWidgets import (
-    QApplication, QDialog, QVBoxLayout, 
-    QTabWidget, QWidget, QLabel, 
-    QLineEdit, QPushButton, QMessageBox
-)
+# -*- coding: utf-8 -*-
+from PyQt5.QtWidgets import (QDialog, QLabel, QLineEdit, 
+                            QPushButton, QVBoxLayout, QMessageBox)
 from PyQt5.QtCore import Qt
+import sys  # Nuevo import añadido
 
 class LoginWindow(QDialog):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Control de Peso")
-        self.setFixedSize(500, 400)  # Tamaño fijo suficiente
+        # Configuración básica de la ventana
+        self.setWindowTitle("Sistema de Dietas - Login V2")
+        self.setFixedSize(400, 300)
         
-        # Configuración ESPECIAL para macOS
+        # ESTILOS VISIBLES (aseguran que los componentes se vean)
         self.setStyleSheet("""
-            QTabBar::tab {
+            QDialog {
+                background-color: #f0f0f0;
+                font-family: Arial;
+            }
+            QLabel {
+                color: #333333;
+                font-size: 14px;
+                padding: 5px;
+            }
+            QLineEdit {
+                border: 2px solid #3498db;
+                border-radius: 5px;
+                padding: 8px;
+                font-size: 14px;
+                min-width: 200px;
+            }
+            QPushButton {
+                background-color: #3498db;
+                color: white;
                 padding: 10px;
-                background: #f0f0f0;
-                border: 1px solid #aaa;
-                border-bottom: none;
-                border-top-left-radius: 4px;
-                border-top-right-radius: 4px;
-            }
-            QTabBar::tab:selected {
-                background: #fff;
-                border-color: #777;
-            }
-            QTabWidget::pane {
-                border: 1px solid #777;
-                margin-top: -1px;
+                font-size: 14px;
+                border-radius: 5px;
             }
         """)
-        
-        self.init_ui()
-    
-    def init_ui(self):
-        # Widget de pestañas (PRINCIPAL)
-        self.tabs = QTabWidget()
-        self.tabs.setDocumentMode(True)  # Mejor visualización en macOS
-        
-        # Pestaña 1: Login
-        tab_login = QWidget()
-        login_layout = QVBoxLayout(tab_login)
-        
-        lbl_login = QLabel("INICIAR SESIÓN")
-        lbl_login.setAlignment(Qt.AlignCenter)
-        lbl_login.setStyleSheet("font-size: 16px; font-weight: bold;")
-        
-        self.txt_user = QLineEdit(placeholderText="Usuario")
-        self.txt_pass = QLineEdit(placeholderText="Contraseña", echoMode=QLineEdit.Password)
-        btn_login = QPushButton("Ingresar")
-        btn_login.setStyleSheet("background-color: #4CAF50; color: white;")
-        
-        login_layout.addWidget(lbl_login)
-        login_layout.addWidget(QLabel("Usuario:"))
-        login_layout.addWidget(self.txt_user)
-        login_layout.addWidget(QLabel("Contraseña:"))
-        login_layout.addWidget(self.txt_pass)
-        login_layout.addWidget(btn_login)
-        login_layout.addStretch()
-        
-        # Pestaña 2: Registro (OBLIGATORIA)
-        tab_register = QWidget()
-        register_layout = QVBoxLayout(tab_register)
-        
-        lbl_register = QLabel("REGISTRARSE")
-        lbl_register.setAlignment(Qt.AlignCenter)
-        lbl_register.setStyleSheet("font-size: 16px; font-weight: bold;")
-        
-        self.reg_user = QLineEdit(placeholderText="Nuevo usuario")
-        self.reg_pass = QLineEdit(placeholderText="Contraseña", echoMode=QLineEdit.Password)
-        self.reg_confirm = QLineEdit(placeholderText="Confirmar contraseña", echoMode=QLineEdit.Password)
-        btn_register = QPushButton("Crear cuenta")
-        btn_register.setStyleSheet("background-color: #2196F3; color: white;")
-        
-        register_layout.addWidget(lbl_register)
-        register_layout.addWidget(QLabel("Usuario:"))
-        register_layout.addWidget(self.reg_user)
-        register_layout.addWidget(QLabel("Contraseña:"))
-        register_layout.addWidget(self.reg_pass)
-        register_layout.addWidget(QLabel("Confirmar:"))
-        register_layout.addWidget(self.reg_confirm)
-        register_layout.addWidget(btn_register)
-        register_layout.addStretch()
-        
-        # Añadir pestañas (VISIBLES)
-        self.tabs.addTab(tab_login, "Iniciar Sesión")
-        self.tabs.addTab(tab_register, "Registrarse")
-        
-        # Layout principal
-        main_layout = QVBoxLayout(self)
-        main_layout.addWidget(self.tabs)
-        
-        # Conexiones
-        btn_login.clicked.connect(self.login)
-        btn_register.clicked.connect(self.register)
-        
-        # TRUCO FINAL: Forzar visibilidad
-        self.tabs.setCurrentIndex(1)  # Mostrar primero registro
-        self.tabs.setCurrentIndex(0)  # Volver a login
-    
-    def login(self):
-        QMessageBox.information(self, "Login", "Función de login")
-    
-    def register(self):
-        if self.reg_pass.text() != self.reg_confirm.text():
-            QMessageBox.warning(self, "Error", "Las contraseñas no coinciden")
-            return
-        QMessageBox.information(self, "Éxito", "Usuario registrado")
 
+        # COMPONENTES VISIBLES (aseguran que haya contenido)
+        self.lbl_title = QLabel("INICIO DE SESIÓN (VERSIÓN VISIBLE)")
+        self.lbl_title.setAlignment(Qt.AlignCenter)
+        self.lbl_title.setStyleSheet("font-size: 20px; color: #e74c3c; font-weight: bold;")
+        
+        self.txt_username = QLineEdit()
+        self.txt_username.setPlaceholderText("Ejemplo: usuario123")
+        
+        self.txt_password = QLineEdit()
+        self.txt_password.setEchoMode(QLineEdit.Password)
+        self.txt_password.setPlaceholderText("Ingresa tu contraseña")
+        
+        self.btn_login = QPushButton("Acceder al Sistema")
+        
+        # LAYOUT CON MÁRGENES VISIBLES
+        layout = QVBoxLayout()
+        layout.setContentsMargins(30, 30, 30, 30)
+        layout.setSpacing(15)
+        layout.addWidget(self.lbl_title)
+        layout.addWidget(QLabel("Usuario:"))
+        layout.addWidget(self.txt_username)
+        layout.addWidget(QLabel("Contraseña:"))
+        layout.addWidget(self.txt_password)
+        layout.addWidget(self.btn_login)
+        
+        # ASIGNAR LAYOUT (esto hace que los componentes se muestren)
+        self.setLayout(layout)
+
+        # Conexión del botón para verificar funcionalidad
+        self.btn_login.clicked.connect(lambda: QMessageBox.information(
+            self, "Prueba", "¡El botón funciona correctamente!"))
+
+# Código de prueba directa
 if __name__ == "__main__":
+    from PyQt5.QtWidgets import QApplication
     app = QApplication(sys.argv)
-    app.setStyle('Fusion')  # ¡ESENCIAL para macOS!
-    
     window = LoginWindow()
     window.show()
-    
     sys.exit(app.exec_())
