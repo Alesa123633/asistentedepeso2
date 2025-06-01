@@ -3,19 +3,21 @@ from PyQt5.QtWidgets import QApplication
 from login_window import LoginWindow
 
 def main():
-    # Configuración de la aplicación
     app = QApplication(sys.argv)
-    app.setStyle('Fusion')  # Estilo moderno
     
-    # Crear ventana
-    window = LoginWindow()
+    # Forzar estilo moderno
+    app.setStyle('Fusion')
     
-    # Mostrar ventana (usamos show() en lugar de exec_() para mejor depuración)
-    window.show()
+    # Crear y mostrar ventana de login
+    login = LoginWindow()
     
-    # Ejecutar aplicación
-    sys.exit(app.exec_())
+    # Verificar si el login fue exitoso
+    if login.exec_() == LoginWindow.Accepted:
+        print("Login exitoso!")
+    else:
+        print("Login fallido")
+        sys.exit(0)
 
 if __name__ == "__main__":
-    print("Iniciando aplicación...")  # Mensaje de verificación
+    print("Iniciando aplicación...")
     main()
