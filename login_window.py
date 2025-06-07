@@ -8,7 +8,7 @@ class LoginWindow(QDialog):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Control de Peso - Inicio de Sesión")
-        self.setFixedSize(450, 350)
+        self.setFixedSize(550, 450)
         self.user_id = None  # Para almacenar el ID del usuario logeado
         self.setup_ui()
         self.setup_styles()
@@ -38,48 +38,77 @@ class LoginWindow(QDialog):
         main_layout.addWidget(self.tabs)
         self.setLayout(main_layout)
 
+    # Reemplaza todo el setup_styles() en food_form.py con:
     def setup_styles(self):
-        """Configura los estilos visuales"""
+        """Estilo unificado con login/registro"""
         self.setStyleSheet("""
-            QDialog {
-                background-color: #F5F5F5;
-                font-family: Arial;
+            QWidget {
+                background-color: #F5F5F5; /* Mismo fondo gris claro */
+                font-family: Segoe UI;
             }
             QLabel {
                 color: #333333;
-                font-size: 14px;
+                font-size: 16px;  /* Tamaño aumentado */
                 padding: 5px 0;
             }
             QLineEdit {
                 border: 1px solid #CCCCCC;
                 border-radius: 5px;
-                padding: 8px;
-                font-size: 14px;
-                min-width: 200px;
+                padding: 10px;   /* Más espacio interno */
+                font-size: 16px; /* Tamaño aumentado */
+                color: #000000;  /* Texto negro sólido */
+                background-color: #FFFFFF;
+                min-width: 250px;
             }
             QPushButton {
-                background-color: #4CAF50;
+                background-color: #4CAF50; /* Verde como en login */
                 color: white;
-                padding: 10px 20px;
+                padding: 12px 25px;
                 border-radius: 8px;
-                font-size: 14px;
+                font-size: 16px;
                 border: none;
+                min-width: 180px;
             }
             QPushButton:hover {
-                background-color: #3E8E41;
+                background-color: #3E8E41; /* Verde oscuro al pasar mouse */
             }
-            QTabWidget::pane {
-                border: 1px solid #CCCCCC;
-                border-radius: 5px;
-                padding: 10px;
+            QTimeEdit {
+                padding: 8px;
+                font-size: 16px;
+                min-width: 120px;
+                background-color: #FFFFFF;
             }
+        """)
+    
+    # Estilo especial para el título
+        title = self.findChild(QLabel)
+        title.setStyleSheet("""
+            font-size: 20px;
+            font-weight: bold;
+            color: #2E7D32; /* Verde oscuro */
+            padding-bottom: 20px;
         """)
 
     def setup_login_tab(self):
-        """Configura la pestaña de login"""
-        # Componentes
+        """Configura la pestaña de login con letras grandes"""
+    # ESTILO IDÉNTICO AL REGISTRO
+        self.login_tab.setStyleSheet("""
+            QLabel {
+                font-size: 18px;
+                padding: 8px 0;
+            }
+            QLineEdit {
+                font-size: 16px;
+                padding: 10px;
+                min-height: 30px;
+            }
+        """)
+    
+    # Mantén todo tu código existente igual debajo de esto
         lbl_title = QLabel("Iniciar Sesión")
-        lbl_title.setStyleSheet("font-size: 18px; font-weight: bold; color: #2E7D32;")
+        lbl_title.setStyleSheet("font-size: 20px; font-weight: bold;")
+    
+    # ... resto de tu código actual
         lbl_title.setAlignment(Qt.AlignCenter)
         
         lbl_user = QLabel("Usuario:")
@@ -108,16 +137,35 @@ class LoginWindow(QDialog):
         self.login_tab.setLayout(layout)
 
     def setup_register_tab(self):
-        """Configura la pestaña de registro"""
-        # Componentes
+        """Configura la pestaña de registro con letras más grandes"""
+        # Estilo específico para registro
+        self.register_tab.setStyleSheet("""
+            QLabel {
+                font-size: 18px;  /* Tamaño aumentado */
+                padding: 8px 0;
+                color: #333333;
+            }
+            QLineEdit {
+                font-size: 16px;  /* Tamaño aumentado */
+                padding: 10px;
+                min-height: 35px;
+                background-color: white;
+                border: 1px solid #CCCCCC;
+                border-radius: 5px;
+            }
+        """)
+    
+    # El resto de tu código de registro permanece igual
         lbl_title = QLabel("Crear Cuenta")
-        lbl_title.setStyleSheet("font-size: 18px; font-weight: bold; color: #1565C0;")
-        lbl_title.setAlignment(Qt.AlignCenter)
-        
+        lbl_title.setStyleSheet("font-size: 22px; font-weight: bold; color: #1565C0;")
+    
+    # ... (mantén el resto de tu código existente)
+    
         lbl_user = QLabel("Usuario:")
         self.txt_register_user = QLineEdit()
-        self.txt_register_user.setPlaceholderText("Cree un nombre de usuario")
-        
+        self.txt_register_user.setPlaceholderText("Crea un nombre de usuario")
+    
+    # ... (todo lo demás sigue exactamente igual)
         lbl_pass = QLabel("Contraseña:")
         self.txt_register_pass = QLineEdit()
         self.txt_register_pass.setEchoMode(QLineEdit.Password)
