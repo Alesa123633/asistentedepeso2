@@ -1,23 +1,27 @@
 import sys
 from PyQt5.QtWidgets import QApplication
 from login_window import LoginWindow
+from food_form import FoodForm
 
 def main():
     app = QApplication(sys.argv)
     
-    # Forzar estilo moderno
-    app.setStyle('Fusion')
+    # Mostrar ventana de login
+    login_window = LoginWindow()
     
-    # Crear y mostrar ventana de login
-    login = LoginWindow()
-    
-    # Verificar si el login fue exitoso
-    if login.exec_() == LoginWindow.Accepted:
-        print("Login exitoso!")
+    if login_window.exec_() == LoginWindow.Accepted:
+        # Obtener datos del usuario
+        username = login_window.txt_login_user.text()
+        user_id = login_window.user_id
+        
+        # Mostrar ventana de comidas
+        food_window = FoodForm(user_id, username)
+        food_window.show()  # Mostrar la ventana
+        
+        # Ejecutar la aplicación
+        sys.exit(app.exec_())
     else:
-        print("Login fallido")
         sys.exit(0)
 
 if __name__ == "__main__":
-    print("Iniciando aplicación...")
     main()
