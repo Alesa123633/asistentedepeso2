@@ -1,27 +1,35 @@
 import sys
 from PyQt5.QtWidgets import QApplication
+from database import DatabaseManager
 from login_window import LoginWindow
-from food_form import FoodForm
+from dashboard import Dashboard
 
-def main():
-    app = QApplication(sys.argv)
-    
-    # Mostrar ventana de login
-    login_window = LoginWindow()
-    
-    if login_window.exec_() == LoginWindow.Accepted:
-        # Obtener datos del usuario
-        username = login_window.txt_login_user.text()
-        user_id = login_window.user_id
+class NutritionApp:
+    def __init__(self):
+        self.db_manager = DatabaseManager()
+        self.app = QApplication(sys.argv)
         
-        # Mostrar ventana de comidas
-        food_window = FoodForm(user_id, username)
-        food_window.show()  # Mostrar la ventana
+        # Primero mostramos el login
+        self.login_window = LoginWindow(self.db_manager)
         
-        # Ejecutar la aplicación
-        sys.exit(app.exec_())
-    else:
-        sys.exit(0)
+        # Luego el dashboard
+        self.dashboard = Dashboard(self.db_manager)
+        
+        # Conectamos las señales
+        self.login_window.accepted.connect(self.show_dashboard)
+    
+    def show_dashboard(self):
+        """Muestra el dashboard después del login exitoso"""
+        self.dashboard.user_id = self.login_window.user_id
+        self.dashboard.username = self.login_window.txt_login_user.text()
+        self.dashboard.authenticate()
+        self.dashboard.show()
+    
+    def run(self):
+        """Ejecuta la aplicación"""
+        self.login_window.show()
+        sys.exit(self.app.exec_())
 
 if __name__ == "__main__":
-    main()
+    nutrition_app = NutritionApp()
+    nutrition_app.run()
